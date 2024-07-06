@@ -2,7 +2,7 @@
 namespace sensor_sim {
 namespace sensor {
 Vision::Vision(std::shared_ptr<Ekf> ekf) : Sensor(ekf) {}
-Vision::~Vision(){}
+Vision::~Vision() {}
 
 void Vision::Send(uint64_t time_us) {
   vision_data_.time_us = time_us;
@@ -33,7 +33,8 @@ VisionSample Vision::DataAtRest() {
   VisionSample sample;
   sample.position = Eigen::Vector3d::Zero();
   sample.velocity = Eigen::Vector3d::Zero();
-  sample.orientation = Eigen::Quaterniond{0.9689124, 0.0, 0.0, 0.247404}.normalized();
+  sample.orientation =
+      Eigen::Quaterniond{0.9689124, 0.0, 0.0, 0.247404}.normalized();
   sample.position_variance = Eigen::Vector3d{0.1, 0.1, 0.1};
   sample.angular_variance = 0.05;
   return sample;

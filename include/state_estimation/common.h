@@ -6,11 +6,16 @@
 #include <rclcpp/rclcpp.hpp>
 
 #define LOGGER_NAME "Ekf"
-#define EKF_INFO_ONCE(...) RCLCPP_INFO_ONCE(rclcpp::get_logger(LOGGER_NAME), ##__VA_ARGS__)
-#define EKF_DEBUG(...) RCLCPP_DEBUG(rclcpp::get_logger(LOGGER_NAME), ##__VA_ARGS__)
-#define EKF_INFO(...) RCLCPP_INFO(rclcpp::get_logger(LOGGER_NAME), ##__VA_ARGS__)
-#define EKF_WARN(...) RCLCPP_WARN(rclcpp::get_logger(LOGGER_NAME), ##__VA_ARGS__)
-#define EKF_ERROR(...) RCLCPP_ERROR(rclcpp::get_logger(LOGGER_NAME), ##__VA_ARGS__)
+#define EKF_INFO_ONCE(...) \
+  RCLCPP_INFO_ONCE(rclcpp::get_logger(LOGGER_NAME), ##__VA_ARGS__)
+#define EKF_DEBUG(...) \
+  RCLCPP_DEBUG(rclcpp::get_logger(LOGGER_NAME), ##__VA_ARGS__)
+#define EKF_INFO(...) \
+  RCLCPP_INFO(rclcpp::get_logger(LOGGER_NAME), ##__VA_ARGS__)
+#define EKF_WARN(...) \
+  RCLCPP_WARN(rclcpp::get_logger(LOGGER_NAME), ##__VA_ARGS__)
+#define EKF_ERROR(...) \
+  RCLCPP_ERROR(rclcpp::get_logger(LOGGER_NAME), ##__VA_ARGS__)
 
 // #define EKF_INFO_ONCE(X, ...) printf(X "\n", ##__VA_ARGS__)
 // #define EKF_DEBUG(X, ...) printf(X "\n", ##__VA_ARGS__)
@@ -25,51 +30,50 @@ constexpr double kGravity = 9.81;
 constexpr double kPi = 3.1415926;
 constexpr uint64_t kBadAccelProbation = (uint64_t)10e6;
 
-
 constexpr int kNumStates{16};
 typedef Eigen::Matrix<double, kNumStates, 1> StateVectord;
 typedef Eigen::Matrix<double, kNumStates, kNumStates> StateMatrixd;
 
 union ControlStatus {
   struct {
-    uint32_t tilt_align: 1;
-    uint32_t yaw_align: 1;
-    uint32_t in_air: 1;
-    uint32_t baro_height: 1;
-    uint32_t vision_height: 1;
-    uint32_t vision_position: 1;
-    uint32_t vision_yaw: 1;
-    uint32_t vision_orientation: 1;
-    uint32_t vehicle_at_rest: 1;
+    uint32_t tilt_align : 1;
+    uint32_t yaw_align : 1;
+    uint32_t in_air : 1;
+    uint32_t baro_height : 1;
+    uint32_t vision_height : 1;
+    uint32_t vision_position : 1;
+    uint32_t vision_yaw : 1;
+    uint32_t vision_orientation : 1;
+    uint32_t vehicle_at_rest : 1;
   } flags;
   uint32_t value;
 };
 
 union FaultStatus {
   struct {
-    bool bad_heading: 1;
-    bool bad_velocity_x: 1;
-    bool bad_velocity_y: 1;
-    bool bad_velocity_z: 1;
-    bool bad_position_x: 1;
-    bool bad_position_y: 1;
-    bool bad_position_z: 1;
-    bool bad_acceleration_bias: 1;
-    bool bad_acceleration_vertical: 1;
-    bool bad_acceleration_clipping: 1;
-  }flags;
+    bool bad_heading : 1;
+    bool bad_velocity_x : 1;
+    bool bad_velocity_y : 1;
+    bool bad_velocity_z : 1;
+    bool bad_position_x : 1;
+    bool bad_position_y : 1;
+    bool bad_position_z : 1;
+    bool bad_acceleration_bias : 1;
+    bool bad_acceleration_vertical : 1;
+    bool bad_acceleration_clipping : 1;
+  } flags;
   uint32_t value;
 };
 
 union InnovationFault {
   struct {
-    bool reject_horizontal_velocity: 1;
-    bool reject_vertical_velocity: 1;
-    bool reject_horizontal_position: 1;
-    bool reject_vertical_position: 1;
-    bool reject_yaw: 1;
-    bool reject_baro: 1;
-  }flags;
+    bool reject_horizontal_velocity : 1;
+    bool reject_vertical_velocity : 1;
+    bool reject_horizontal_position : 1;
+    bool reject_vertical_position : 1;
+    bool reject_yaw : 1;
+    bool reject_baro : 1;
+  } flags;
   uint16_t value;
 };
 
@@ -162,10 +166,15 @@ struct Settings {
 
   //////////////////////////////////////////////////////////////////////////////
   // state limits
-  Eigen::Vector3d position_upper_limit = {2.0, 4.0, 0.5}; ///< constrains the valid position values of the delayed ekf state.
-  Eigen::Vector3d position_lower_limit = {0.0, 0.0, -2.0}; ///< constrains the valid position values of the delayed ekf state.
-  double velocity_limit{15.0}; ///< constrains the valid velocity values of the delayed ekf state.
-  double delta_angle_bias_limit{5*M_PI * kFilterUpdatePeriodUs * 1e-6};
+  Eigen::Vector3d position_upper_limit = {
+      2.0, 4.0,
+      0.5};  ///< constrains the valid position values of the delayed ekf state.
+  Eigen::Vector3d position_lower_limit = {
+      0.0, 0.0, -2.0};  ///< constrains the valid position values of the delayed
+                        ///< ekf state.
+  double velocity_limit{15.0};  ///< constrains the valid velocity values of the
+                                ///< delayed ekf state.
+  double delta_angle_bias_limit{5 * M_PI * kFilterUpdatePeriodUs * 1e-6};
 
   Eigen::Vector3d velocity_noise = {0.1, 0.1, 0.1};
   Eigen::Vector3d position_noise = {0.1, 0.1, 0.1};
@@ -175,6 +184,4 @@ struct Settings {
   double vertical_innovation_test_limit{3.0};
 
   double heading_innovation_gate{2.6};
-
 };
-

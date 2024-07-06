@@ -172,23 +172,28 @@ void Ekf::ResetHeight() {
     const BaroSample &baro_newest = baro_buffer_.Newest();
     if (!baro_height_faulty_) {
       ResetVerticalPositionTo(baro_newest.height + baro_height_offset_);
-      EKF_INFO("Resetting height to barometer data: %.2f", baro_newest.height + baro_height_offset_);
+      EKF_INFO("Resetting height to barometer data: %.2f",
+               baro_newest.height + baro_height_offset_);
       P_.row(StateIndex::position_z).setZero();
       P_.col(StateIndex::position_z).setZero();
       P_(StateIndex::position_z, StateIndex::position_z) =
           square(settings_.baro_noise);
     } else {
       // TODO: reset to some old estimate?
-      EKF_WARN("Trying to reset height to barometer data, but barometer data is faulty!");
+      EKF_WARN(
+          "Trying to reset height to barometer data, but barometer data is "
+          "faulty!");
     }
   } else if (control_status_.flags.vision_height) {
     const VisionSample &vision_newest = vision_buffer_.Newest();
     if (vision_newest.time_us >= vision_sample_delayed_.time_us) {
       ResetVerticalPositionTo(vision_newest.position(2));
-      EKF_INFO("Resetting height to newest vision data: %.2f", vision_newest.position.z());
+      EKF_INFO("Resetting height to newest vision data: %.2f",
+               vision_newest.position.z());
     } else {
       ResetVerticalPositionTo(vision_sample_delayed_.position(2));
-      EKF_INFO("Resetting height to delayed vision data: %.2f", vision_sample_delayed_.position.z());
+      EKF_INFO("Resetting height to delayed vision data: %.2f",
+               vision_sample_delayed_.position.z());
     }
   }
 

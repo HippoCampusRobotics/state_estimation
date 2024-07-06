@@ -5,8 +5,8 @@ namespace sensor_sim {
 namespace sensor {
 class Baro : public Sensor {
  public:
-  Baro(std::shared_ptr<Ekf> ekf) : Sensor(ekf){};
-  ~Baro(){};
+  Baro(std::shared_ptr<Ekf> ekf) : Sensor(ekf) {};
+  ~Baro() {};
   inline void SetData(double height) { baro_data_ = height; }
 
  private:

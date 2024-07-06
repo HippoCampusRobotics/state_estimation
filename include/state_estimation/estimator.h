@@ -4,12 +4,12 @@
 #include <geometry_msgs/msg/pose_with_covariance_stamped.hpp>
 #include <geometry_msgs/msg/quaternion_stamped.hpp>
 #include <geometry_msgs/msg/twist_stamped.hpp>
-#include <hippo_msgs/msg/estimator_innovation.hpp>
-#include <hippo_msgs/msg/estimator_sensor_bias.hpp>
-#include <hippo_msgs/msg/estimator_state.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <sensor_msgs/msg/fluid_pressure.hpp>
 #include <sensor_msgs/msg/imu.hpp>
+#include <state_estimation_msgs/msg/estimator_innovation.hpp>
+#include <state_estimation_msgs/msg/estimator_sensor_bias.hpp>
+#include <state_estimation_msgs/msg/estimator_state.hpp>
 
 struct EstimatorInnovation {
   uint64_t time_us;
@@ -54,7 +54,7 @@ class Estimator final : public rclcpp::Node {
   //////////////////////////////////////////////////////////////////////////////
   // Publisher
   //////////////////////////////////////////////////////////////////////////////
-  rclcpp::Publisher<hippo_msgs::msg::EstimatorInnovation>::SharedPtr
+  rclcpp::Publisher<state_estimation_msgs::msg::EstimatorInnovation>::SharedPtr
       innovation_pub_;
   rclcpp::Publisher<geometry_msgs::msg::TwistStamped>::SharedPtr twist_pub_;
   rclcpp::Publisher<geometry_msgs::msg::PoseWithCovarianceStamped>::SharedPtr
@@ -63,9 +63,10 @@ class Estimator final : public rclcpp::Node {
       delayed_pose_pub_;
   rclcpp::Publisher<geometry_msgs::msg::QuaternionStamped>::SharedPtr
       attitude_pub_;
-  rclcpp::Publisher<hippo_msgs::msg::EstimatorSensorBias>::SharedPtr
+  rclcpp::Publisher<state_estimation_msgs::msg::EstimatorSensorBias>::SharedPtr
       sensor_bias_pub_;
-  rclcpp::Publisher<hippo_msgs::msg::EstimatorState>::SharedPtr state_pub_;
+  rclcpp::Publisher<state_estimation_msgs::msg::EstimatorState>::SharedPtr
+      state_pub_;
 
   //////////////////////////////////////////////////////////////////////////////
   // Subscriber

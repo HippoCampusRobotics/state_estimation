@@ -926,7 +926,7 @@ void Ekf::PredictCovariance() {
   for (int i = 10; i < 13; ++i) {
     const int index = i - 10;
     P_new(i, i) = KahanSummation(P_new(i, i), process_noise_var(i),
-                                  delta_angle_bias_var_accumulated_(index));
+                                 delta_angle_bias_var_accumulated_(index));
   }
 
   if (!accel_bias_inhibited_[0]) {
@@ -946,7 +946,7 @@ void Ekf::PredictCovariance() {
     P_new(13, 13) = P(13, 13);
 
     P_new(13, 13) = KahanSummation(P_new(13, 13), process_noise_var(13),
-                                    delta_velocity_bias_var_accumulated_(0));
+                                   delta_velocity_bias_var_accumulated_(0));
   } else {
     P_new.UncorrelateCovarianceSetVariance<1>(13,
                                               prev_delta_velocity_bias_var_(0));
@@ -970,7 +970,7 @@ void Ekf::PredictCovariance() {
     P_new(14, 14) = P(14, 14);
 
     P_new(14, 14) = KahanSummation(P_new(14, 14), process_noise_var(14),
-                                    delta_velocity_bias_var_accumulated_(1));
+                                   delta_velocity_bias_var_accumulated_(1));
   } else {
     P_new.UncorrelateCovarianceSetVariance<1>(14,
                                               prev_delta_velocity_bias_var_(1));
@@ -995,7 +995,7 @@ void Ekf::PredictCovariance() {
     P_new(15, 15) = P(15, 15);
 
     P_new(15, 15) = KahanSummation(P_new(15, 15), process_noise_var(15),
-                                    delta_velocity_bias_var_accumulated_(2));
+                                   delta_velocity_bias_var_accumulated_(2));
   } else {
     P_new.UncorrelateCovarianceSetVariance<1>(15,
                                               prev_delta_velocity_bias_var_(1));

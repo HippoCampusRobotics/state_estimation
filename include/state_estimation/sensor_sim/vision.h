@@ -14,7 +14,7 @@ class Vision : public Sensor {
   void SetAngularVariance(double var);
   VisionSample DataAtRest();
 
-  private:
+ private:
   VisionSample vision_data_;
   void Send(uint64_t time_us) override;
 };

@@ -1,12 +1,11 @@
 #include <gtest/gtest.h>
 #include <state_estimation/ekf.h>
-
 #include <state_estimation/sensor_sim/sensor_sim.h>
 
 class EkfBasicTest : public ::testing::Test {
  public:
   EkfBasicTest()
-      : ::testing::Test(), ekf_{std::make_shared<Ekf>()}, sensor_sim_(ekf_){};
+      : ::testing::Test(), ekf_{std::make_shared<Ekf>()}, sensor_sim_(ekf_) {};
 
   void SetUp() override {
     ekf_->Init(0);
@@ -20,6 +19,4 @@ class EkfBasicTest : public ::testing::Test {
   const double init_period_{4.0};
 };
 
-TEST_F(EkfBasicTest, tiltAlign) {
-  EXPECT_TRUE(ekf_->AttitudeValid());
-}
+TEST_F(EkfBasicTest, tiltAlign) { EXPECT_TRUE(ekf_->AttitudeValid()); }

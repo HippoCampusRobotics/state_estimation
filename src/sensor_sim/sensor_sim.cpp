@@ -57,7 +57,8 @@ void SensorSim::SetImuBias(const Eigen::Vector3d &accel_bias,
 }
 
 void SensorSim::SimulateOrientation(const Eigen::Quaterniond &orientation) {
-  // TODO(lennartalff): Directly apply rotation without creating the rotation matrix
+  // TODO(lennartalff): Directly apply rotation without creating the rotation
+  // matrix
   const Eigen::Vector3d world_gravity = {0.0, 0.0, kGravity};
   const Eigen::Matrix3d R_to_earth = orientation.toRotationMatrix();
   const Eigen::Vector3d body_gravity = R_to_earth.transpose() * world_gravity;

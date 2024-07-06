@@ -1,6 +1,7 @@
 #pragma once
-#include <stdint.h>
 #include <state_estimation/common.h>
+#include <stdint.h>
+
 #include <cstddef>
 
 template <typename T>
